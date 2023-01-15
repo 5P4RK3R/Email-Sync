@@ -31,34 +31,34 @@ messageIds = messages.get("messages")
 # print(messages)
 print(len(messageIds))
 
-# def get_next_page_msg(mssg_list, results):
+def get_next_page_msg(mssg_list, results):
 
-#     if 'nextPageToken' in results:
-#         results = (
-#             service.users()
-#             .messages()
-#             .list(userId='me',pageToken=results["nextPageToken"])
-#             .execute()
-#         )
-#         # results = (
-#         #     service.users()
-#         #     .messages()
-#         #     .list(userId=email, q=query, pageToken=results["nextPageToken"],includeSpamTrash=True, maxResults=10000)
-#         #     .execute()
-#         # )
-#         mssg_list.extend(results["messages"])
-#         return get_next_page_msg(mssg_list, results)
-#         # if len(results.get("messages",[])):
-#         #     mssg_list.extend(results.get("messages"))
-#         #     return get_next_page_msg(mssg_list, results)
-#         # else:
-#         #     return mssg_list
+    if 'nextPageToken' in results:
+        results = (
+            service.users()
+            .messages()
+            .list(userId='me',pageToken=results["nextPageToken"])
+            .execute()
+        )
+        # results = (
+        #     service.users()
+        #     .messages()
+        #     .list(userId=email, q=query, pageToken=results["nextPageToken"],includeSpamTrash=True, maxResults=10000)
+        #     .execute()
+        # )
+        mssg_list.extend(results["messages"])
+        return get_next_page_msg(mssg_list, results)
+        # if len(results.get("messages",[])):
+        #     mssg_list.extend(results.get("messages"))
+        #     return get_next_page_msg(mssg_list, results)
+        # else:
+        #     return mssg_list
 
-#     else:
-#         return mssg_list
+    else:
+        return mssg_list
 
-# messageIds = get_next_page_msg(messageIds, messages)
-# print(messageIds)
+messageIds = get_next_page_msg(messageIds, messages)
+print(messageIds)
 print(len(messageIds))
 def getThread(thread):
     return [(msg["threadId"],msg["snippet"],msg["internalDate"]) for msg in service.users().threads().get(userId='me', id=thread["threadId"],format='full').execute().get("messages")]
