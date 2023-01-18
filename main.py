@@ -10,7 +10,10 @@ import pandas as pd
 from pyspark.conf import SparkConf
 from pyspark.context import SparkContext
 from pyspark.sql import SparkSession
-
+import os
+os.environ[
+    "PYSPARK_SUBMIT_ARGS"
+] = '--packages "org.elasticsearch:elasticsearch-spark-30_2.12:8.6.0" pyspark-shell'
 conf = SparkConf()
 conf.setMaster("local").setAppName("Email Sync")
 # conf.set("es.index.auto.create", "true")
@@ -21,7 +24,7 @@ sc = SparkContext(conf=conf)
 spark = SparkSession(sc)
 access_token = getenv("access_token")
 pprint(access_token)
-access_token = "ya29.a0AX9GBdWmWSWQlhUdDwMTHp_sXnx1rYsEPWQYjiJ31leJj7QFGlSm5Ru_Mx-fMDeFl507PfbFgBy5mz8GFzWOhwTGteVImuAbsvRAHUKBBsofOsZVlVdO9K-1U8ki9dlqHQtX7_c2fK1Jvyt4Ufn-4E4I01s2aCgYKATwSARISFQHUCsbCAmfNZCMaBmX2M1Hh-x0ykQ0163"
+access_token = "ya29.a0AX9GBdW8GI14r_sIj8EuE1DjVTPM1Gb7KOzueIDTbTgzUPGHCRrxYoegT8G6zhmB2fOnDoeeqFEmvRLf8Bp6i761Ek4Xp4uKNYcOOsz_-EY4F6jQXsrz8WFAmawictjva0On7V2_fUD4U1TriM5xpTUKxNQ5aCgYKAQcSARISFQHUCsbC9yvpS_h_thWEg_7YGkQqEg0163"
 credentials = AccessTokenCredentials(access_token, "my-user-agent/1.0")
 http = httplib2.Http()
 http = credentials.authorize(http)
@@ -58,7 +61,7 @@ def get_next_page_msg(mssg_list, results):
         return mssg_list
 
 messageIds = get_next_page_msg(messageIds, messages)
-print(messageIds)
+# print(messageIds)
 print(len(messageIds))
 def getThread(thread):
     return [(msg["threadId"],msg["snippet"],msg["internalDate"]) for msg in service.users().threads().get(userId='me', id=thread["threadId"],format='full').execute().get("messages")]
